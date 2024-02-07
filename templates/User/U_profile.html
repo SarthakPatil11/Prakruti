@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Profile
+{% endblock title %}
+
+{% block nav_links%}
+<li class="menu-active nav-item">
+    <a class="nav-link" href="/">Home</a>
+</li>
+{% endblock nav_links%}
+
+{% block body %}
+<!-- Modal Below -->
+<div class="modal" id="ApModal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border: none; background-color: rgb(221, 221, 221); z-index: 3">
+            <div class="modal-header bg-secondary">
+                <h4 class="modal-title text-warning">Edit Details</h4>
+                <button type="button" class="btn-close" data-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/U_profile/" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="name" class="form-label">
+                                <b>Full Name:</b>
+                            </label>
+                        </div>
+                        <div class="col-6">
+                            <label for="name" class="form-label">
+                                <b>Your DP:</b>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <div class="col-12 my-4">
+                                <input type="first name" class="form-control" id="Fname" placeholder="First Name" name="Fname" required />
+                            </div>
+                            <div class="col-12 my-4">
+                                <input type="middle name" class="form-control" id="Mname" placeholder="Middle Name" name="Mname" required />
+                            </div>
+                            <div class="col-12 my-4">
+                                <input type="last name" class="form-control" id="Lname" placeholder="Last Name" name="Lname" required />
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="col-12 my-0">
+                                <center>
+                                    <img id="Img" src="../../static/img/about-img.jpg" height="140px" width="140px" style="border-radius: 100%" />
+                                </center>
+                            </div>
+                            <div class="col-12">
+                                <input class="form-control mt-3" type="file" name="inFile" id="inFile" onchange="validateImage()" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <label for="email" class="form-label">
+                                <b>Email:</b>
+                            </label>
+                            <input type="email" class="form-control" id="Email" placeholder="Email" name="Email" onfocusout="validateEmail()" required />
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <label for="Phone" class="form-label">
+                                <b>Phone Number:</b>
+                            </label>
+                            <input type="number" class="form-control" id="Phone" placeholder="Phone No." name="Phone" onfocusout="validatePhone()" required />
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-12 col-md-3 col-lg-4">
+                            <label for="age" class="form-label">
+                                <b>Age:</b>
+                            </label>
+                            <input type="number" class="form-control" id="Age" placeholder="Age" name="Age" onfocusout="validateAge()" required />
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-4">
+                            <label for="Gender" class="form-label">
+                                <b>Gender:</b>
+                            </label>
+                            <select class="form-select form-select-sm form-control" placeholder="Select Gender" id="Gender" name="Gender" onfocusout="validateGender()">
+                                <option selected value="0"> Select </option>
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
+                                <option value="3">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-5 col-lg-4">
+                            <label for="Prakruti" class="form-label">
+                                <b>Prakruti:</b>
+                            </label>
+                            <label class="form-control" id="Prakruti" name="Prakruti"></label>
+                        </div>
+                    </div>
+                    <input type="hidden" name="patient_id" value="{{users.id}}">
+                    <button type="submit" id="Submit" name="submit" value="update" class="btn btn-warning text-gray-800 mt-2 float-right"> Edit </button> {% csrf_token %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Above -->
+
+<!-- Body below -->
+<div class="row mx-4" style="margin-top: 120px;">
+    <div class="col-12 col-md-5 col-lg-3 mb-4">
+        <center>
+            <img src="../../media/{{users.Img}}" width="250px" height="250px" id="dp" style="border-radius: 100%" />
+        </center>
+    </div>
+    <div class="col-12 col-md-7 col-lg-9 py-4">
+        <div class="row mb-2">
+            <div class="col-lg-1"></div>
+            <div class="col-12 col-md-12 col-lg-2">
+                <label class="form-label" for="name" class="form-label">
+                    <b>Full Name:</b>
+                </label>
+            </div>
+            <div class="col-12 col-md-4 col-lg-3">
+                <label class="form-control" id="fname" name="fname">{{user.first_name}}</label>
+            </div>
+            <div class="col-12 col-md-4 col-lg-3">
+                <label class="form-control" id="mname" name="mname">{{users.Middle_name}}</label>
+            </div>
+            <div class="col-12 col-md-4 col-lg-3">
+                <label class="form-control" id="lname" name="lname">{{users.last_name}}</label>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-lg-1"></div>
+            <div class="col-12 col-md-6 col-lg-2 align-items-center d-flex">
+                <label class="form-label"> <b>Email Address:</b> </label>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <label class="form-control" id="email" name="email">{{users.email}}</label>
+            </div>
+            <div class="col-12 col-md-6 col-lg-2 align-items-center d-flex">
+                <label class="form-label"><b>Phone Number:</b> </label>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <label class="form-control" id="phone" name="phone">{{users.Phone_No}}</label>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-lg-1"></div>
+            <div class="col-2 col-md-2 col-lg-1 align-items-center d-flex">
+                <label class="form-label"> <b>Age:</b> </label>
+            </div>
+            <div class="col-4 col-md-4 col-lg-2">
+                <label class="form-control" id="age" name="age">{{users.Age}}</label>
+            </div>
+            <div class="col-2 col-md-2 col-lg-1 align-items-center d-flex">
+                <label class="form-label"> <b>Gender:</b> </label>
+            </div>
+            <div class="col-4 col-md-4 col-lg-2">
+                <label class="form-control" id="gender" name="gender">{{users.Gender}}</label>
+            </div>
+            <div class="col-2 col-md-2 col-lg-1 align-items-center d-flex">
+                <label class="form-label"> <b>Prakruti:</b> </label>
+            </div>
+            <div class="col-10 col-md-10 col-lg-4">
+                <label class="form-control" id="prakruti" name="prakruti">{{users.P_Prakruti}} {{users.S_Prakruti}}</label>
+            </div>
+        </div> {% if users.id == request.user.id %} <div class="w-100 text-end">
+            <button type="submit" class="btn bg-success text-white" name="Edit" title="Edit Details" data-toggle="modal" data-target="#ApModal" onclick="transferED()">
+                <i class="far fa-edit"> Edit</i>
+            </button>
+        </div> {%endif%}
+    </div>
+</div> {% if users.admin == 0 %} <!-- put if condition for id to show patient's History -->
+<center>
+    <hr style=" width: 90%; border: 1px solid rgb(255, 183, 0);
+        border-radius: 5px; opacity: 80%; margin: 20px;" />
+</center>
+<div class="d-flex justify-content-between">
+    <a href="#" type="button" class="btn btn-primary mx-3 mb-3">
+        <i class="fas fa-download fa-sm text-white"></i> Report </a>
+    <form action="/A_profile/" method="post" style="width: 45%;" class="mx-3">
+        <div class="input-group">
+            <input type="number" class="form-control bg-light" placeholder="Search for Appointment id" name="search" />
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>
+        <input type="hidden" name="patient_id" value="{{users.id}}"> {% csrf_token %}
+    </form>
+    <div class="dropdown float-right mx-3 mb-3">
+        <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown"> Sort via </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li>
+                <a class="dropdown-item" href="#">Day</a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">Time Slot</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row m-1"> {% for apnt in users.apnts %} <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <div class="card">
+            <div class="card-header" style="background-color: #aaccff">
+                <div class="row">
+                    <div class="col-7">
+                        <div class="title d-lg-inline text-white" style="font-size: larger; font-weight: 630">
+                            <b id="title">{{apnt.id}}</b>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="text-white text-uppercase text-end h6" id="day">
+                            {{apnt.Date}} <br />{{apnt.TimeSlot}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body" style="text-align: justify">{{apnt.P_med}}</div>
+        </div>
+    </div> {%endfor%} </div> {% endif %}
+{% endblock body %}

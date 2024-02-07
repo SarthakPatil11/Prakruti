@@ -1,0 +1,155 @@
+{%extends 'base.html'%}
+{ % load static % }
+
+{% block background%}
+style="background:linear-gradient(45deg, #1de099, #1dc8cd)"
+{% endblock background%}
+
+{% block title%} SignUp {%endblock title%}
+
+{% block body %}
+<div class="sign_up">
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-7">
+            <div class="card" style="border-radius: 30px;">
+                <h1>SIGN UP</h1>
+                <hr style="border: solid rgb(0, 170, 255);">
+
+                <form action="/signup/" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-9">
+                            <label for="username" class="form-label"> <b>User Name:</b> </label>
+                        </div>
+                        <div class="col-3">
+                            <label for="img_DP" class="form-label"> <b>Your DP:</b> </label>
+                        </div>
+                    </div>
+                    <div class="row mb-3 me-2 ">
+                        <div class="col-9  mx-0">
+                            <div class="col-12 my-2">
+                                <input type="Username" class="form-control mb-3" id="input_UserName"
+                                    placeholder="Enter username" name="input_UserName" onchange="validate_UName()"
+                                    required>
+                            </div>
+                            <div id="div_msgUserNameExist" class="alert alert-danger fade show msg" role="alert"
+                                style="display :none;">
+                                <strong>USERNAME ALREADY EXIST</strong>
+                            </div>
+                            <div class="col-12 my-4">
+                                <input type="file" class="form-control mb-3" id="input_File" name="input_File"
+                                    onchange="validateImage()" required>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <center>
+                                <img id="img_DP" name="img" src="../../static/img/about-img.jpg" height="120px"
+                                    width="120px" style="border-radius: 100%" />
+                            </center>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="mb-3">
+                                <label for="input_Password" class="form-label"><b>Password:</b></label>
+                                <input type="password" class="form-control" id="input_Password"
+                                    placeholder="Enter password" name="input_Password"
+                                    onfocusout="validate_pass('input_Password')" required>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="mb-3">
+                                <label for="input_ConfirmPassword" class="form-label"><b>Confirm Password:</b></label>
+                                <input type="password" class="form-control" id="input_ConfirmPassword"
+                                    placeholder="Enter confirm password" name="input_ConfirmPassword"
+                                    onfocusout="validate_cpass('input_Password', 'input_ConfirmPassword')" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_msgPassRules" style="display:none" class="alert alert-warning mx-4 py-1 px-2"
+                        role="alert">
+                        Password should be 8 - 16 characters wide<br /> And should contain<br />
+                        - Uppercase & Lowercase letters<br />- Numbers and One special character
+                    </div>
+                    <div id="div_msgPassNotMatch" class="alert alert-danger mx-5" role="alert" style="display :none;">
+                        <strong>PASSWORDS DONT MATCH</strong>
+                    </div>
+
+                    <label for="name" class="form-label"><b>Full Name:</b></label>
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-4 my-1">
+                            <input type="first name" class="form-control" id="input_FirstName"
+                                placeholder="Enter First Name" name="input_FirstName" required>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-4 my-1">
+                            <input type="middle name" class="form-control" id="input_MiddleName"
+                                placeholder="Enter Middle Name" name="input_MiddleName" required>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-4 my-1">
+                            <input type="last name" class="form-control" id="input_LastName"
+                                placeholder="Enter Last Name" name="input_LastName" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 col-md-6 col-lg-6">
+                            <label for="input_Age" class="form-label"> <b>Age:</b> </label>
+                            <input type="number" class="form-control" id="input_Age" placeholder="Age" name="input_Age"
+                                onfocusout="validateAge()" required />
+                        </div>
+                        <div class="col-6 col-md-6 col-lg-6">
+                            <label for="input_Gender" class="form-label"> <b>Gender:</b> </label>
+                            <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example"
+                                placeholder="Select Gender" id="input_Gender" name="input_Gender"
+                                onchange="validateGender()">
+                                <option selected value="0">Select</option>
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
+                                <option value="3">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-6">
+                            <div class="my-2">
+                                <label for="input_SignupEmail" class="form-label"><b>Email:</b></label>
+                                <input type="email" class="form-control" id="input_SignupEmail"
+                                    placeholder="Enter email" name="input_SignupEmail"
+                                    onfocusout="validate_email('input_SignupEmail')" required>
+                            </div>
+                        </div>
+                        <div id="signup_email_error" class="alert alert-danger fade show msg" role="alert"
+                            style="display :none;">
+                            <strong>INVALID EMAIL</strong>
+                        </div>
+                        <div id="signup_email_exist" class="alert alert-danger fade show msg" role="alert"
+                            style="display :none;">
+                            <strong>EMAIL ALREADY EXIST</strong>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-6">
+                            <div class="my-2">
+                                <label for="input_Phone" class="form-label"><b>Phone Number:</b></label>
+                                <input type="input_Phone" class="form-control" id="input_Phone"
+                                    placeholder="Enter Phone No." name="input_Phone" onfocusout="validate_phone()"
+                                    required>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_msgPhoneNumber" class="alert alert-danger fade show msg" role="alert"
+                        style="display :none;">
+                        <strong>INVALID PHONE</strong>
+                    </div>
+                    {% csrf_token %}
+                    <button type="submit" id="btn_Submit"
+                        class="btn btn-primary float-end mt-lg-3 mt-2 border-0 text-white">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body%}
+
+
+{% block footer_navs%}
+<a href="" class="scrollto">Home</a>
+<a href="" class="scrollto">About</a>
+{% endblock footer_navs%}

@@ -1,0 +1,123 @@
+{%extends 'base.html'%}
+
+{% block background%}
+style="background:linear-gradient(45deg, #1de099, #1dc8cd)"
+{% endblock background%}
+
+{% block title%} Shopping {%endblock title%}
+{% block nav_links%}
+<li class="menu-active nav-item">
+    <a class="nav-link" href="/">Home</a>
+</li>
+<li class="menu-active nav-item">
+    <a class="nav-link" href="/analyze"></a>
+</li>
+{% endblock nav_links%}
+
+{% block body %}
+<form action="/cart/" method="post" id="myForm">
+    <input type="hidden" name="Order" id="ord" value="">
+    <input type="hidden" name="Address" id="addr" value="">
+    <input type="hidden" name="Tprice" id="tprice" value="">
+    <div style="margin-bottom: 70px;" id="cont">
+    {%if prdno > 0%}
+        <div class="myContainer ms-4">
+            <div class="section-header head">
+                <h3 class="section-title cta-title fw-bold text-white">Your cart</h3>
+                <span class="section-dividerR ms-4">
+            </div>
+        </div> 
+        <!-- Cart items -->
+        {%for item in Cart%} 
+            <div class="row bg-white p-2 m-2 mx-5" style="border-radius: 15px;">
+                <div class="col-1 text-center">
+                    <input class="form-check-input" type="checkbox" name="prod_id" id="{{item.id}}" value="{{item.id}}" checked onchange="chng({{item.id}},1)">
+                </div>
+                <div class="col-2">
+                    <center>
+                        <img src="../../media/Prakruti_App/Med_images/{{item.Img}}" style="width: 100%; border-radius: 5px;" alt="Italian Trulli">
+                    </center>
+                </div>
+                <div class="col-7" style="text-align:justify">
+                    <label for="pname"> <b>Name : </b> {{item.Name}}</label>
+                    <p class="mb-2"> <b>Description : </b> {{item.Desc}}</p>
+                    <label for="qt"><b>Quantity : </b>&nbsp;&nbsp;</label>
+                    <input type="number" name="qt" id="qt{{item.id}}" value="{{item.quant}}" onchange="chQuant({{item.id}})" style="border-radius:7px; width:60px">
+                    <input type="hidden" id="pprice{{item.id}}" value="{{item.Price}}">
+                </div>
+                <div class="col-1 d-flex align-items-center" id="qprice{{item.id}}"> {{item.qprice}} </div>
+                <div class="col-1 d-flex align-items-center">
+                    <form action="/cart/" method="post">
+                        <button class="btn bg-danger text-white" name="remove" value="{{item.cartid}}">
+                            <i class="far fa-trash-alt"></i>
+                        </button> {% csrf_token %}
+                    </form>
+                </div>
+            </div> 
+        {% endfor %}
+        <center>
+            <hr style="width: 90%; border: 1px solid rgb(255, 183, 0); border-radius: 5px; opacity: 80%; margin: 10px;"/>
+        </center>
+        <div class="row bg-white p-2 pt-3 mx-5" style="border-radius: 15px; ">
+            <div class="col-10" style="text-align:justify">
+                <label for="Title"><b>Total Amount for <label id="prds">{{ prdno }}</label> products (₹): </b></label>
+            </div>
+            <div class="col-2" id="Tprice">0</div>
+        </div>
+        <a class="btn btn-warning text-white mt-3 me-5 float-right" data-bs-toggle="collapse" data-bs-target="#collapseExample" onclick="pass()"> Checkout </a>
+    {%else%} 
+        <label class="text-white m-5"><b>YOUR CART IS EMPTY</b></label>
+        <center>
+            <div class="intro-text pb-4 mt-5">
+                <a href="/shopping/" class="btn-get-started scrollto bg-blue-500 text-white" style="font-weight: 700;"> Add Products 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" 
+                        class="bi bi-arrow-right-circle" viewBox="0 0 16 16" style="margin-left: 10px">
+                        <path fillRule="evenodd"
+                            d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
+                    </svg>
+                </a>
+            </div>
+        </center>
+    {%endif%}
+    </div>
+    <div class="collapse m-2 mx-5" style="margin-bottom: 30px;" id="collapseExample">
+        <div class="card card-body py-2">
+            <label for="Address" class="form-label">
+                <b>Delivery Address:</b>
+            </label>
+            <textarea id="Address" class="form-control" placeholder="Address"></textarea>
+            <div class="text-end mt-2">
+                <button type="submit" class="btn btn-primary text-white" title="proceed to payment" onclick="pass(1)"> Proceed </button>
+            </div>
+        </div>
+    </div> {% csrf_token %}
+</form>
+<script type="text/javascript">
+    window.onload = function (){
+        if (document.getElementById("msg")) {
+            document.getElementById('cont').style.marginTop = "5px";
+        } else {
+            document.getElementById('cont').style.marginTop = "100px";
+        }
+        calc();
+        console.log('calc called')
+    }
+    function calc() {
+        var prdno = parseInt(document.getElementById("prds").innerHTML);
+        var Tprice = document.getElementById("Tprice").innerHTML = 0;
+        let i = 0;
+        {%for item in Cart %}
+            chng({{ item.id }},0);
+        {%endfor%}
+    }
+    function pass(who) {
+        if (who){            
+            document.getElementById("addr").value = document.getElementById("Address").value;
+            document.getElementById("tprice").value = document.getElementById("Tprice").value;
+            document.getElementById("myForm").submit();
+        }else{
+            document.getElementById("ord").value = document.getElementById("prds").innerHTML;
+        }
+    }
+</script>
+{% endblock body%}

@@ -1,0 +1,61 @@
+{%extends 'base.html'%} {% block background%} style="background:linear-gradient(45deg, #1de099, #1dc8cd)" {% endblock background%} {% block title%} Recommender {%endblock title%} {% block nav_links%}
+<li class="menu-active nav-item">
+  <a class="nav-link" href="/">Home</a>
+</li>
+<li class="menu-active nav-item">
+  <a class="nav-link" href="/shopping">Shopping</a>
+</li> {% endblock nav_links%} {% block body %} <div class="mainContainer">
+  <center>
+    <div class="card" style="max-width: 60%; border-radius: 15px; padding: 5px 8px 5px 5px;">
+      <div class="row g-0">
+        <div class="col-md-3 d-inline-flex p-3">
+          <img src="../../static/img/prakrutis/{{ prakruti.p }}.jpg" class="img-fluid prakruti-img" value="" style="z-index: 2" />
+          <img src="../../static/img/prakrutis/{{ prakruti.s }}.jpg" class="img-fluid prakruti-img" value="" style="margin-left: -60px; z-index: 1;" />
+        </div>
+        <div class="col-md-9 prakruti-text">
+          <div class="card-body">
+            <h5 class="card-title"><b>{{ prakruti.p }} - {{ prakruti.s }}</b></h5>
+            <p class="card-text">
+              {{ prakruti.d }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </center>
+  <form class="pt-5 row" action="/shopping/" method="post"> {%for Quetion in Quetions%} <!-- #ffcb30 -->
+    <div class="mx-auto mb-3 row rounded-3 pt-3 col-lg-10 col-md-11 col-11" style="background-color: rgba(255, 255, 255, 0.693); width:85% !important;">
+      <div class="mb-3 mt-1 p-3 rounded-3 col-lg-10 col-md-10 col-12" style="background-color: rgb(141, 141, 141); background-color: rgb(255, 243, 212);">
+        <div class="h5" style="font-family: 'Brush Script MT', cursive; color: rgb(121, 121, 121);">
+          <b>Q.{{ forloop.counter }} {{Quetion.que}}</b>
+        </div>
+      </div>
+      <div class="col-lg-1 col-md-1 col-6">
+        <div class="rounded-3" style="background-color: rgb(255, 255, 255); width: fit-content; height: fit-content;">
+          <input type="radio" class="btn-check" name="{{ forloop.counter }}" value="1" id="{{Quetion.id}}bld-tp1" autocomplete="off">
+          <label class="btn py-3 px-4 my-1" for="{{Quetion.id}}bld-tp1"
+            style="font-family: 'Brush Script MT', cursive; letter-spacing: 0.1em; font-size: 18px; color: gb(141, 141, 141) !important;"><b>{{Quetion.choice1}}</b></label>
+        </div>
+      </div>
+      <div class="col-lg-1 col-md-1 col-6">
+        <div class="rounded-3" style="background-color: rgb(255, 255, 255); width: fit-content; height: fit-content;">
+          <input type="radio" class="btn-check" name="{{ forloop.counter }}" value="0" id="{{Quetion.id}}bld-tp2" autocomplete="off">
+          <label class="btn py-3 px-4 my-1" for="{{Quetion.id}}bld-tp2"
+            style="font-family: 'Brush Script MT', cursive; letter-spacing: 0.1em; font-size: 18px; color: gb(141, 141, 141) !important;"><b>{{Quetion.choice2}}</b></label>
+        </div>
+      </div>
+    </div> {%endfor%} {%csrf_token%} <div class="Q_Form rounded-3 row w-50 mx-auto p-3">
+      <center>
+        <div class="row mx-0" id="options">
+          <div class="col-6 col-md-7 col-lg-10 mb-0 p-3 rounded-3 h4 bg-white text-secondary">
+            <input type="hidden" name="recc" value="{{Quetions.count}}" /> Are you sure with your answers ?
+          </div>
+          <div class="col-6 col-md-5 col-lg-2" style="display: grid; margin: auto;">
+            <button type="submit" class="btn btn-primary mx-auto my-auto p-2 px-3"> <b>Proceed</b> </button>
+          </div>
+        </div>
+      </center>
+    </div>
+  </form>
+</div>
+</div> {% endblock body%}

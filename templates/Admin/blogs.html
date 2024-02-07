@@ -1,0 +1,178 @@
+{%extends 'Admin/admin_base.html'%}
+{% load static %}
+
+<!-- 
+{% block title%}
+Blogs
+{%endblock title%}
+
+{% block admin_title2%}
+/Blogs
+{%endblock admin_title2%}
+-->
+
+{%block activeB%}
+<!-- Divider -->
+<hr
+  style="width: 15px; border: 3px solid rgb(255, 183, 0); border-radius: 5px; opacity: 80%; margin-top: 0%; margin-bottom: 1%;">
+{% endblock activeB%}
+
+{% block body %}
+<div class="d-flex justify-content-between">
+  <button type="button" class="btn btn-warning mx-3 mb-3" data-toggle="modal" data-target="#BModal"
+    onclick="transferBlog()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="20" fill="currentColor" class="bi bi-plus-circle"
+      viewBox="0.5 2 15 16">
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+    </svg>
+    New
+  </button>
+  <!-- modal -->
+  <div class="modal" id="BModal">
+    <div class="modal-dialog">
+      <div class="modal-content" style="border: none; background-color: rgb(221, 221, 221); z-index: 3">
+        <div class="modal-header bg-secondary">
+          <h4 class="modal-title text-warning" id="MTitle"> </h4>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+            onclick="transferBlog()"></button>
+        </div>
+
+        <div class="modal-body">
+          <form action="/blogs/" method="post" enctype="multipart/form-data">
+            <div class="row mb-2">
+              <div class="col-12 col-md-12 col-lg-12">
+                <label for="Title" class="form-label"> <b>Blog Title:</b> </label>
+                <input type="text" class="form-control" id="Title" placeholder="Title" name="Title" required />
+                <input type="hidden" name="bid" id="bid" value="">
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-12 col-md-6 col-lg-6">
+                <label for="Blog type" class="form-label"> <b>Blog type:</b> </label>
+                <select class="form-control form-select form-select-sm" aria-label=".form-select-sm example"
+                  placeholder="Type" id="Btype" name="Btype" onchange="validateBType()">
+                  <option selected value="0">Select Type</option>
+                  <option value="1">Blog</option>
+                  <option value="2">Image</option>
+                  <option value="3">Video</option>
+                </select>
+              </div>
+              <div class="col-12 col-md-6 col-lg-6" id="inGrp">
+                <label for="formFile" class="form-label">
+                  <b>Choose File:</b>
+                </label>
+                <input class="form-control mt-2" type="file" name="inFile" id="inFile" onchange="blogChk()" />
+              </div>
+            </div>
+
+            <div class="row mb-2">
+              <div class="col-12 col-md-12 col-lg-12" id="textField" style="display: none">
+                <label for="Contents" class="form-label"><b>Content:</b></label>
+                <textarea class="form-control" style="height: 150px" name="content" id="Contents"
+                  placeholder="Your Content here" name="Contents" required></textarea>
+              </div>
+              <div class="col-12 col-md-12 col-lg-12" id="imgField" style="display: none">
+                <label for="Img" class="form-label"> <b>Image:</b> </label> <br />
+                <center>
+                  <input type="image" id="Img" value="" src="../../static/img/close_cam.png" width="75%" name="Img"
+                    disabled />
+                </center>
+              </div>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12" id="videoField" style="display: none">
+              <label for="Vdo" class="form-label"> <b>Video:</b> </label> <br />
+              <center>
+                <video width="70%" id="Vdo" name="Vdo" controls>
+                </video>
+              </center>
+            </div>
+            <input type="hidden" name="ImgURL" id="setImgURL" value="">
+            <button type="submit" name="submit" id="Submit"
+              class="btn btn-warning text-gray-800 mt-2 float-right"></button>
+            {% csrf_token %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form action="/blogs/" method="post" style="width: 45%;" class="mx-3">
+    <div class="input-group">
+      <input type="text" class="form-control bg-light" placeholder="Search for..." name="search" />
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit">
+          <i class="fas fa-search fa-sm"></i>
+        </button> 
+      </div>
+    </div>
+    {% csrf_token %}
+  </form>
+
+  <div class="dropdown float-right mx-3 mb-3">
+    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown"
+      aria-expanded="false">
+      Sort via
+    </button>
+    <form action="/blogs/" method="post">
+      <ul class="dropdown-menu" style="text-align: center;">
+        <li><button class="btn" name="sort" type="submit" value="Title"> Title </button></li>
+        <li><button class="btn" name="sort" type="submit" value="Date"> Date </button></li>
+        <!-- <button class="btn" name="sort" type="submit" value="Gender"> Gender </button>
+        <button class="btn" name="sort" type="submit" value="email"> EmailID </button>
+        <button class="btn" name="sort" type="submit" value="Phone_No"> Phone No. </button>
+        <button class="btn" name="sort" type="submit" value="P_Prakruti"> Prakruti </button> -->
+      </ul> {% csrf_token %}
+    </form>
+  </div>
+</div>
+
+<!-- bolgs' cards -->
+<div class="row m-1">
+  {%for Bl in Bls%}
+  <div class="col-12 col-md-6 col-lg-4 mt-2">
+    <div class="card">
+      <div class="card-header" style="background-color: #aaccff;">
+        <div class="row">
+          <div class="col-7">
+            <div class="title d-lg-inline text-white" style="font-size: larger; font-weight: 630;">
+              <b id="title{{Bl.pk}}">{{Bl.Title}}</b>
+              <span class="badge bg-warning mb-1 text-uppercase" id="type{{Bl.pk}}"
+                style="font-size: 55%;">{{Bl.Type}}</span>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="text-white text-uppercase text-end h6" id="day">| {{Bl.Date}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body" style="min-height: 220px;" >
+        <!-- <CENTER> -->
+        {%if Bl.Type == "BLOG"%}
+          <p class="card-text mb-0 pstyle" id="contents{{Bl.pk}}">{{Bl.Content}}</p>
+        {%elif Bl.Type == 'IMAGE'%}
+          <img src="../../media/{{Bl.file}}" id="img{{Bl.pk}}" style="width: 100%; height: 100%; border-radius: 5px;"
+            alt="Italian Trulli" />
+        {%else%}
+          <video width="100%" id="vdo{{Bl.pk}}" style="border-radius: 5px;" controls
+            src="../../media/{{Bl.file}}"></video>
+        {%endif%}
+          <input type="hidden" id="getImgURL{{Bl.pk}}" value="{{Bl.file}}">
+        <!-- </CENTER> -->
+      </div>
+      <div class="text-end mb-3 me-3">
+        <form action="/blogs/" method="post">
+          <a class="btn text-white" style="background-color: #aaccff;" data-toggle="modal" data-target="#BModal"
+            onclick="transferBlog({{Bl.pk}})">
+            <i class="far fa-edit"></i>
+          </a>
+          <button type="submit" class="btn bg-danger text-white" name="remove" value="{{Bl.pk}}">
+            <i class="far fa-trash-alt"></i>
+          </button>
+          {% csrf_token %}
+        </form>
+      </div>
+    </div>
+  </div>
+  {%endfor%}
+  {% endblock body%}

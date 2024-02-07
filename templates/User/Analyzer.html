@@ -1,0 +1,177 @@
+{%extends 'base.html'%}
+{% load static %}
+
+{% block background%}
+style="background:linear-gradient(45deg, #1de099, #1dc8cd)"
+{% endblock background%}
+
+{% block title%} Analyzer {%endblock title%}
+
+{% block nav_links%}
+<li class="menu-active nav-item">
+  <a class="nav-link" href="/">Home</a>
+</li>
+<li class="menu-active nav-item">
+  <a class="nav-link" href="/shopping">Shopping</a>
+</li>
+{% endblock nav_links%}
+
+{% block body %}
+<div class="modal fade" id="WebcamM" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border: none; background-color: rgb(198, 198, 198)">
+      <div class="modal-header" style="background-color: #e8bb37">
+        <h4 class="modal-title">Camera Module</h4>
+      </div>
+      <div class="modal-body collapse fade" id="myCam">
+        <center>
+          <video id="video" style="-webkit-transform:scaleX(-1); transform:scaleX(-1);" playsinline autoplay></video>
+          <span id="ErrorMessage"></span>
+        </center>
+      </div>
+      <div class="modal-footer">
+        <div id="aft" style="display:none;">
+          <button class="btn btn-primary" id="snapshot" onclick="snap()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-camera"
+              viewBox="3 0 10 16">
+              <path
+                d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z" />
+              <path
+                d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
+            </svg>
+          </button>
+          <button class="btn btn-secondary ml-3" data-dismiss="modal" aria-label="Close"
+            onclick="document.getElementById('cam-open').click()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
+              class="bi bi-camera-video-off" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M10.961 12.365a1.99 1.99 0 0 0 .522-1.103l3.11 1.382A1 1 0 0 0 16 11.731V4.269a1 1 0 0 0-1.406-.913l-3.111 1.382A2 2 0 0 0 9.5 3H4.272l.714 1H9.5a1 1 0 0 1 1 1v6a1 1 0 0 1-.144.518l.605.847zM1.428 4.18A.999.999 0 0 0 1 5v6a1 1 0 0 0 1 1h5.014l.714 1H2a2 2 0 0 1-2-2V5c0-.675.334-1.272.847-1.634l.58.814zM15 11.73l-3.5-1.555v-4.35L15 4.269v7.462zm-4.407 3.56-10-14 .814-.58 10 14-.814.58z" />
+            </svg>
+          </button>
+        </div>
+        <div id="bef">
+          <button id="cam-open" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#myCam"
+            onclick="cam()">Allow</button>
+          <button class="btn btn-secondary" data-dismiss="modal" aria-label="Close"> Deny </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="p-3 pt-5">
+  <!-- <center> -->
+  <!-- <div class="row mx-0" id="options">
+      <div class="col-6 col-md-7 col-lg-10 mb-0 p-3 rounded-3 h4 bg-white text-secondary">
+        Do you want to get details with camera ?
+      </div>
+      <div class="col-6 col-md-5 col-lg-2" style="display: grid; margin: auto;">
+        <button class="btn btn-primary mx-auto my-auto p-2 px-3" data-toggle="modal" data-target="#WebcamM">
+          <b style="color: white;">Open camera</b>
+        </button>
+      </div>
+    </div> -->
+  <!-- </center> -->
+</div>
+<!-- <canvas id="canvas" class="mb-0" height="360" width="480"
+  style="-webkit-transform:scaleX(-1); transform:scaleX(-1);"></canvas> -->
+
+
+<!-- repeat START -->
+
+<form class="pt-5" action="/analyze/" method="post">
+
+  {% if user.is_authenticated == 0 %}
+  <div class="mx-auto mb-3 rounded-3 pt-3 pb-2 px-3"
+    style="background-color: rgba(255, 255, 255, 0.693); width:85% !important;">
+    <div class="mb-3 mt-1 p-3 rounded-3" style="background-color: rgb(141, 141, 141);">
+      <div class="h5 text-white" style="font-family: 'Brush Script MT', cursive;">
+        <b>Choose your gender</b>
+      </div>
+    </div>
+    <div class="row" id="options">
+      <div class="col-lg-4 col-md-12 col-12">
+        <div class="rounded-3" style="background-color: rgb(255, 255, 255);">
+          <input type="radio" class="btn-check" name="0" value="1" id="0bld-tp1" autocomplete="off">
+          <label class="btn p-3" for="0bld-tp1"
+            style="font-family: 'Brush Script MT', cursive; letter-spacing: 0.1em; font-size: 18px; color: gb(141, 141, 141) !important;"><b>Male</b></label>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-12 col-12">
+        <div class="rounded-3" style="background-color: rgb(255, 255, 255);">
+          <input type="radio" class="btn-check" name="0" value="2" id="0bld-tp2" autocomplete="off">
+          <label class="btn p-3" for="0bld-tp2"
+            style="font-family: 'Brush Script MT', cursive; letter-spacing: 0.1em; font-size: 18px; color: gb(141, 141, 141) !important;"><b>Female</b></label>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-12 col-12">
+        <div class="rounded-3" style="background-color: rgb(255, 255, 255);">
+          <input type="radio" class="btn-check" name="0" value="3" id="0bld-tp3" autocomplete="off">
+          <label class="btn p-3" for="0bld-tp3"
+            style="font-family: 'Brush Script MT', cursive; letter-spacing: 0.1em; font-size: 18px; color: gb(141, 141, 141) !important;"><b>Other</b></label>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <input type="hidden" name="0" value="{{ User.Gender }}" id="0bld-tp3" autocomplete="off">
+  {% endif %}
+
+  {%for Quetion in Quetions%}
+  <!-- #ffcb30 -->
+  <div class="mx-auto mb-3 rounded-3 pt-3 pb-2 px-3"
+    style="background-color: rgba(255, 255, 255, 0.693); width:85% !important;">
+    <div class="mb-3 mt-1 p-3 rounded-3" style="background-color: rgb(141, 141, 141);">
+      <div class="h5 text-white" style="font-family: 'Brush Script MT', cursive;">
+        <b>Q.{{Quetion.id}}) {{Quetion.que}}</b>
+      </div>
+    </div>
+    <div class="row" id="options">
+      <div class="col-lg-4 col-md-12 col-12">
+        <div class="rounded-3" style="background-color: rgb(255, 255, 255);">
+          <input type="radio" class="btn-check" name="{{Quetion.id}}" value="1" id="{{Quetion.id}}bld-tp1"
+            autocomplete="off" required>
+          <label class="btn p-3" for="{{Quetion.id}}bld-tp1"
+            style="font-family: 'Brush Script MT', cursive; letter-spacing: 0.1em; font-size: 18px; color: gb(141, 141, 141) !important;"><b>{{Quetion.choice1}}</b></label>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-12 col-12">
+        <div class="rounded-3" style="background-color: rgb(255, 255, 255);">
+          <input type="radio" class="btn-check" name="{{Quetion.id}}" value="2" id="{{Quetion.id}}bld-tp2"
+            autocomplete="off">
+          <label class="btn p-3" for="{{Quetion.id}}bld-tp2"
+            style="font-family: 'Brush Script MT', cursive; letter-spacing: 0.1em; font-size: 18px; color: gb(141, 141, 141) !important;"><b>{{Quetion.choice2}}</b></label>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-12 col-12">
+        <div class="rounded-3" style="background-color: rgb(255, 255, 255);">
+          <input type="radio" class="btn-check" name="{{Quetion.id}}" value="3" id="{{Quetion.id}}bld-tp3"
+            autocomplete="off">
+          <label class="btn p-3" for="{{Quetion.id}}bld-tp3"
+            style="font-family: 'Brush Script MT', cursive; letter-spacing: 0.1em; font-size: 18px; color: gb(141, 141, 141) !important;"><b>{{Quetion.choice3}}</b></label>
+        </div>
+      </div>
+    </div>
+  </div>
+  {%endfor%}
+  {%csrf_token%}
+
+  <div class="Q_Form rounded-3 row w-50 mx-auto p-3">
+    <center>
+      <div class="row mx-0" id="options">
+        <div class="col-6 col-md-7 col-lg-10 mb-0 p-3 rounded-3 h4 bg-white text-secondary">
+          Are you sure with your answers ?
+        </div>
+        <div class="col-6 col-md-5 col-lg-2" style="display: grid; margin: auto;">
+          <button type="submit" class="btn btn-primary mx-auto my-auto p-2 px-3"> <b>Proceed</b> </button>
+        </div>
+      </div>
+    </center>
+  </div>
+</form>
+
+{% endblock body%}

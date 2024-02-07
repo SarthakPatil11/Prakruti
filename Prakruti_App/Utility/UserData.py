@@ -1,0 +1,11 @@
+class UserData:
+    UserName = '',
+    FirstName = '',
+    MiddleName = '',
+    LastName = '',
+    Email = '',
+    PhoneNumber = '',
+    Password = '',
+    Age = '',
+    Gender = '',
+    ProfilePicture = '',

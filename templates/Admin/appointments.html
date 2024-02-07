@@ -1,0 +1,209 @@
+{%extends 'Admin/admin_base.html'%}
+{% load static %}
+<!-- 
+    {% block title%} 
+Appointments 
+{%endblock title%} 
+
+{% block admin_title2%} 
+/Appointments 
+{%endblock admin_title2%} 
+-->
+{%block activeA%}
+<!-- Divider -->
+<hr style="
+    width: 15px;
+    border: 3px solid rgb(255, 183, 0);
+    border-radius: 5px;
+    opacity: 80%;
+    margin-top: 0%;
+    margin-bottom: 1%;" />
+{% endblock activeA%}
+<!-- activeA -->
+{% block body %}
+<div class="modal" id="ReschModal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border: none; background-color: rgb(221, 221, 221); z-index: 3">
+            <div class="modal-header bg-secondary">
+                <h4 class="modal-title text-warning">Appointment</h4>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/appointments/" method="post">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-6 mb-2">
+                            <label for="name" class="form-label"> <b>Day :</b> </label>
+                            <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example"
+                                id="Day" name="day" onchange="dayChoose()">
+                                <option selected value="0">Select</option>
+                                <option value="1">Today</option>
+                                <option value="2">Tomorrow</option>
+                                <option value="3">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6 my-2" id="dateSec">
+                            <label for="date" class="form-label"> <b>Date :</b> </label>
+                            <input class="form-control" type="date" id="date" name="date" onchange="showAppnt()" />
+                        </div>
+                    </div>
+                    <input type="hidden" id="apptID" name="apptID" value="" />
+                    <div class="row mb-2" id="Appnts">
+                        <label for="name" class="form-label"><b>Available Appointments :</b> </label> <br />
+                        <div class="form-check ms-5">
+                            <input class="form-check-input" type="radio" name="appnt" id="appnt1" value="Morning"
+                                onchange="showAppnt()" />
+                            <label class="form-check-label me-5" for="appnt1"> Morning </label>
+                            <input class="form-check-input" type="radio" name="appnt" id="appnt2" value="Afternoon"
+                                onchange="showAppnt()" />
+                            <label class="form-check-label me-5" for="appnt2"> Afternoon </label>
+                            <input class="form-check-input" type="radio" name="appnt" id="appnt3" value="Evening"
+                                onchange="showAppnt()" />
+                            <label class="form-check-label me-5" for="appnt3"> Evening </label>
+                        </div>
+                    </div>
+                    <button type="submit" name="reschedule" value="Schedule" id="schedule"
+                        class="btn btn-warning text-white-500 mt-2 float-right"> Schedule </button> {% csrf_token %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Prescription Modal -->
+<div class="modal" id="PrescriptionModal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border: none; background-color: rgb(221, 221, 221); z-index: 3">
+            <div class="modal-header bg-secondary">
+                <h4 class="modal-title text-warning">Prescription</h4>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/appointments/" method="post">
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="form-label"> <b>Appointment ID :</b> </label> <label id="ML_aptid"></label>
+                        </div>
+                        <input type="hidden" id="MI_aptid" name="P_apptID" value="" />
+                        <div class="col-12">
+                            <label class="form-label"> <b>Patient Name :</b> </label> <label id="Name"></label>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label"> <b>Details :</b> </label>
+                            <textarea class="form-control" id="Desc" placeholder="Prescription Description"
+                                name="Description" required></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" name="prescribe" value="addPresc" id="addPresc"
+                        class="btn btn-warning text-white-500 mt-2 float-right"> Add </button> {% csrf_token %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-between">
+    <form action="/appointments/" method="post" style="width: 55%;" class="mx-3">
+        <div class="input-group">
+            <div class="input-group-append">
+                <select class="form-select form-control bg-light" style="width:120px; border-end-end-radius: 0px; border-start-end-radius: 0px;" id="Srch" name="srch" onchange="validateSrch()">
+                    <option selected value="0">Search Via</option>
+                    <option value="1">Name</option>
+                    <option value="2">Appnt ID</option>
+                    <option value="3">Email</option>
+                    <option value="4">Phone</option>
+                    <option value="5">Age</option>
+                </select>
+            </div>{% csrf_token %} <input type="text" name="search" class="form-control bg-light" placeholder="Search for..." />
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit" id="srchBtn" disabled>
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+    <div class="dropdown float-right mx-3 mb-3">
+        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown"
+            aria-expanded="false"> Sort via </button>
+    <form action="/patients/" method="post">
+        <ul class="dropdown-menu" style="text-align: center;">
+            <li><button class="btn" name="sort" type="submit" value="first_name"> Name </button></li>
+            <li><button class="btn" name="sort" type="submit" value="Age"> Age </button></li>
+            <li><button class="btn" name="sort" type="submit" value="Gender"> Gender </button></li>
+            <li><button class="btn" name="sort" type="submit" value="email"> EmailID </button></li>
+            <li><button class="btn" name="sort" type="submit" value="Phone_No"> Phone No. </button></li>
+            <li><button class="btn" name="sort" type="submit" value="Date"> Date </button></li>
+        </ul>
+        {% csrf_token %}
+    </form>
+    </div>
+</div>
+<table class="table table-hover table-bordered">
+    <thead class="table-primary">
+        <tr class="table_tr">
+            <th>ID</th>
+            <th>Name</th>
+            <!-- mail, Phone -->
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Date</th>
+            <th>Time Slot</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    {% for Apt in Apts %}
+    <tbody>
+        <td width="1%" id="T_aptid{{Apt.id}}">{{Apt.id}}</td>
+        <td class="d-flex align-items-center justify-content-between border-0">
+            <label id="name{{Apt.id}}">{{Apt.full_name}}</label>
+            <div class="dropdown no-arrow d-lg-inline">
+                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-warning"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                    style="width: 350px; font-size: medium">
+                    <div class="dropdown-header text-warning" style="font-size: medium"> More Details </div>
+                    <b class="ms-3">Email:</b>
+                    <label class="dropdown-list" for="Email_detail">{{Apt.email}}</label><br />
+                    <b class="ms-3">Ph no.:</b>
+                    <label class="dropdown-list" for="Phno_detail">{{Apt.phno}}</label><br>
+                    <b class="ms-3"><a href="/A_profile" style="text-decoration: none;">View Patient's History</a></b>
+                </div>
+            </div>
+        </td>
+        <td width="1%">{{Apt.age}}</td>
+        <td width="1%">{{Apt.gender}}</td>
+        <td width="10%">{{Apt.Date}}</td>
+        <td width="8.2%">{{Apt.TimeSlot}}</td>
+        <td width="18.5%">
+            {%if Apt.Status_A%}
+            <span class="badge bg-success" style="font-size: 85%">Attended</span>
+            {%else%}
+            <span class="badge bg-info" style="font-size: 85%">Not Attended</span>
+            {%endif%}
+            {%if Apt.Status_R%}
+            <span class="badge bg-warning" style="font-size: 85%">Rescheduled</span>
+            {%endif%}
+        </td>
+        <td width="14%">
+            <center>
+                <form action="/appointments/" method="post">
+                    <a type="submit" class="btn bg-success text-white" title="Prescribe Remedy" data-toggle="modal"
+                        data-target="#PrescriptionModal" onclick="transferApt({{Apt.id}})">
+                        <i class="fas fa-mortar-pestle"></i>
+                    </a>
+                    <a type="submit" class="btn bg-info text-white my-1" title="Reschedule" data-toggle="modal"
+                        data-target="#ReschModal" onclick="dayReset({{Apt.id}})">
+                        <i class="far fa-clock"></i>
+                    </a>
+                    <button type="submit" class="btn bg-danger text-white" name="remove" title="Remove"
+                        value="{{Apt.id}}">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                    {% csrf_token %}
+                </form>
+            </center>
+        </td>
+    </tbody>
+    {% endfor %}
+    <tfoot></tfoot>
+</table> {% endblock body%}

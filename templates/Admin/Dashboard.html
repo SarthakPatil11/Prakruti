@@ -1,0 +1,371 @@
+{%extends 'Admin/admin_base.html'%}
+{% load static %}
+
+<!-- 
+{% block title%}
+Dashboard
+{%endblock title%}
+-->
+
+{% block body %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+  </div>
+
+  <!-- Content Row -->
+  <div class="row">
+    <!-- Patient Card Example -->
+    <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-s font-weight-bold text-uppercase mb-1">
+                <a href="/patients" class="text-primary" style="text-decoration: none">Patients</a>
+              </div>
+              <div class="h4 mb-0 font-weight-bold text-gray-800">{{data.pts_ct}}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-clipboard-list fa-4x text-gray"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medicine Remedies Card Example -->
+    <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+      <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-s font-weight-bold text-uppercase mb-1">
+                <a href="/medicine_remedies" class="text-success" style="text-decoration: none">Medicine Remedies</a>
+              </div>
+              <div class="h4 mb-0 font-weight-bold text-gray-800" id="mr">{{data.mrs_ct}}</div>
+            </div>
+            <div class="col-auto">
+              <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-capsule"
+                viewBox="0 0 16 16">
+                <path
+                  d="M1.828 8.9 8.9 1.827a4 4 0 1 1 5.657 5.657l-7.07 7.071A4 4 0 1 1 1.827 8.9Zm9.128.771 2.893-2.893a3 3 0 1 0-4.243-4.242L6.713 5.429l4.243 4.242Z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Home Remedies Card Example -->
+    <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+      <div class="card border-left-secondary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-s font-weight-bold text-uppercase mb-1">
+                <a href="/home_remedies" class="text-secondary" style="text-decoration: none">Home Remedies</a>
+              </div>
+              <div class="h4 mb-0 font-weight-bold text-gray-800" id="hr">{{data.hrs_ct}}</div>
+            </div>
+            <div class="col-auto">
+              <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor"
+                class="bi bi-house-heart-fill" viewBox="0 0 16 16">
+                <path
+                  d="M7.293 1.5a1 1 0 0 1 1.414 0L11 3.793V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3.293l2.354 2.353a.5.5 0 0 1-.708.707L8 2.207 1.354 8.853a.5.5 0 1 1-.708-.707L7.293 1.5Z" />
+                <path
+                  d="m14 9.293-6-6-6 6V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9.293Zm-6-.811c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.691 0-5.018Z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blogs Card Example -->
+    <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+      <div class="card border-left-danger shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-s font-weight-bold text-uppercase mb-1">
+                <a href="/blogs" class="text-danger" style="text-decoration: none">Blogs</a>
+              </div>
+              <div class="h4 mb-0 font-weight-bold text-gray-800" id="bl">{{data.bls_ct}}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-comments fa-4x text-gray"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Appointments Card Example -->
+    <div class="col-xl-6 col-lg-4 col-md-6 mb-4">
+      <div class="card border-left-info shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-s font-weight-bold text-uppercase mb-1">
+                <a href="/appointments" class="text-info" style="text-decoration: none">Appointments</a>
+              </div>
+              <div class="row no-gutters align-items-center">
+                <div class="col-auto">
+                  <div class="h4 mb-0 mr-3 font-weight-bold text-gray-800">
+                    {{data.apts_ct}}%
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="progress progress-sm mr-2">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: {{data.apts_ct}}%"
+                      aria-valuenow="{{data.apts_ct}}" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-calendar-alt fa-4x text-gray"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Orders Card Example -->
+    <div class="col-xl-6 col-lg-4 col-md-6 mb-4">
+      <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-s font-weight-bold text-uppercase mb-1">
+                <a href="/orders" class="text-warning" style="text-decoration: none">Orders</a>
+              </div>
+              <div class="row no-gutters align-items-center">
+                <div class="col-auto">
+                  <div class="h4 mb-0 mr-3 font-weight-bold text-gray-800">
+                    {{data.ords_ct}}%
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="progress progress-sm mr-2">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{data.ords_ct}}%"
+                      aria-valuenow="{{data.ords_ct}}" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-cubes fa-4x text-gray"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Content Row -->
+
+  <div class="row">
+    <!-- Area Chart -->
+    <div class="col-xl-8 col-lg-7">
+      <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+          <div class="dropdown no-arrow">
+            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+              <div class="dropdown-header">Dropdown Header:</div>
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </div>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas id="myAreaChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pie Chart -->
+    <div class="col-xl-4 col-lg-5">
+      <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Published Resources</h6>
+          <div class="dropdown no-arrow">
+            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+              <div class="dropdown-header">Dropdown Header:</div>
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </div>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+          <div class="chart-pie pt-4 pb-2">
+            <canvas id="myPieChart"></canvas>
+          </div>
+          <div class="mt-4 text-center small row">
+            <span class="col-lg-4 col-md-6">
+              <i class="fas fa-circle text-success"></i> Medicine Remedies
+            </span>
+            <span class="col-lg-4 col-md-6">
+              <i class="fas fa-circle text-secondary"></i> Home Remedies
+            </span>
+            <span class="col-lg-4 col-md-6">
+              <i class="fas fa-circle text-danger"></i> Blogs
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Row -->
+  <div class="row">
+    <!-- Content Column -->
+    <div class="col-lg-6 mb-4">
+      <!-- Project Card Example -->
+      <!-- <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+                </div>
+                <div class="card-body">
+                    <h4 class="small font-weight-bold">Server Migration <span class="float-right">20%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Sales Tracking <span class="float-right">40%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Customer Database <span class="float-right">60%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Payout Details <span class="float-right">80%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Account Setup <span class="float-right">Complete!</span></h4>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div> -->
+
+      <!-- Color System -->
+      <!-- <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-primary text-white shadow">
+                        <div class="card-body">
+                            Primary
+                            <div class="text-white-50 small">#4e73df</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-success text-white shadow">
+                        <div class="card-body">
+                            Success
+                            <div class="text-white-50 small">#1cc88a</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-info text-white shadow">
+                        <div class="card-body">
+                            Info
+                            <div class="text-white-50 small">#36b9cc</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-warning text-white shadow">
+                        <div class="card-body">
+                            Warning
+                            <div class="text-white-50 small">#f6c23e</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-danger text-white shadow">
+                        <div class="card-body">
+                            Danger
+                            <div class="text-white-50 small">#e74a3b</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-secondary text-white shadow">
+                        <div class="card-body">
+                            Secondary
+                            <div class="text-white-50 small">#858796</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-light text-black shadow">
+                        <div class="card-body">
+                            Light
+                            <div class="text-black-50 small">#f8f9fc</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-dark text-white shadow">
+                        <div class="card-body">
+                            Dark
+                            <div class="text-white-50 small">#5a5c69</div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+    </div>
+
+    <div class="col-lg-6 mb-4">
+      <!-- Illustrations -->
+      <!-- <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                            src="../../static/admin/img/undraw_posting_photo.svg" alt="...">
+                    </div>
+                    <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow"
+                            href="https://undraw.co/">unDraw</a>, a
+                        constantly updated collection of beautiful svg images that you can use
+                        completely free and without attribution!</p>
+                    <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on
+                        unDraw &rarr;</a>
+                </div>
+            </div> -->
+    </div>
+  </div>
+</div>
+<!-- /.container-fluid -->
+{% endblock body%}

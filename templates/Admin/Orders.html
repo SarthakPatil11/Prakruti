@@ -1,0 +1,144 @@
+{%extends 'Admin/admin_base.html'%}
+{% load static %}
+
+
+{% block title%}
+Orders
+{%endblock title%}
+
+{% block admin_title2%}
+/Orders
+{%endblock admin_title2%}
+
+
+{%block activeO%}
+<!-- Divider -->
+<hr
+    style="width: 15px; border: 3px solid rgb(255, 183, 0); border-radius: 5px; opacity: 80%; margin-top: 0%; margin-bottom: 1%;">
+{% endblock activeO%}
+
+{% block body %}
+<div class="d-flex justify-content-between">
+    <form action="/orders/" method="post" style="width: 40%;" class="mx-3">
+        <div class="input-group">
+            <div class="input-group-append">
+                <select class="form-select form-control bg-light" style="width:120px; border-end-end-radius: 0px; border-start-end-radius: 0px;" id="Srch" name="srch" onchange="validateSrch()">
+                    <option selected value="0">Search Via</option>
+                    <option value="1">User Name</option>
+                    <option value="2">Order ID</option>
+                    <option value="3">Email</option>
+                    <option value="4">Phone</option>
+                    <!-- <option value="5">product Name</option> -->
+                </select>
+            </div> {% csrf_token %} <input type="text" name="search" class="form-control bg-light" placeholder="Search for..." />
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit" id="srchBtn" disabled>
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <div class="dropdown float-right mx-3 mb-3">
+        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown"
+            aria-expanded="false">
+            Sort via
+        </button>
+        <form action="/orders/" method="post">
+            <ul class="dropdown-menu" style="text-align: center;">
+                <!-- <li><button class="btn" name="sort" type="submit" value="first_name"> User Name </button></li> -->
+                <!-- <li><button class="btn" name="sort" type="submit" value="email"> Email </button></li> -->
+                <!-- <button class="btn" name="sort" type="submit" value="Phone_No"> Phone No. </button> -->
+                <li><button class="btn" name="sort" type="submit" value="o_id"> Order Id </button></li>
+                <li><button class="btn" name="sort" type="submit" value="Date"> Order Date </button></li>
+                <li><button class="btn" name="sort" type="submit" value="Time"> Order Time</button></li>
+            </ul> {% csrf_token %}
+        </form>
+    </div>
+</div>
+
+<table class="table table-hover table-bordered">
+    <thead class="table-primary">
+        <tr class="table_tr">
+            <th>ID</th>
+            <th>Product Details</th>
+            <th>Order Amount</th>
+            <th>Day</th>
+            <th>Time</th>
+            <th>User Details</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    {%for order in orders%}
+    <tbody>
+        <td width="1%">{{order.o_id}}</td>
+        <td>
+            {%for prod in order.products%}
+            {%if order.m_id == -1 %}
+            <div class="d-flex align-items-center justify-content-between px-2 text-gray-800" style="border: 1px solid rgb(255, 48, 48); border-radius: 5px; background-color: #ffbcbc;">
+                <label id="chang">{{prod.U_name}} is currently not available.</label>
+            </div>
+            {%else%}
+            <div class="d-flex align-items-center justify-content-between border-0">
+                <label id="chang">{{prod.name}}</label>
+                <div class="dropdown no-arrow d-lg-inline">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-warning"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                        style="width: 250px; font-size: medium;">
+                        <div class="dropdown-header text-warning" style="font-size: medium;">More Details</div>
+                        <b class="ms-3">Quality:</b> <label class="dropdown-list"
+                            for="Email_detail">{{prod.quantity}}</label>
+                        <b class="ms-3">Price:</b> ₹<label class="dropdown-list"
+                            for="Phno_detail">{{prod.price}}</label>
+                    </div>
+                </div>
+            </div>
+            {%endif%}
+            {%endfor%}
+        </td>
+        <td><center>{{order.amount}}</center></td>
+        <td width="12%">{{order.Date}}</td>
+        <td width="9%">{{order.Time}}</td>
+        <td class="d-flex align-items-center justify-content-between border-0">
+            <label id="chang">{{order.full_name}}</label>
+            <div class="dropdown no-arrow d-lg-inline">
+                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-warning"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                    style="width: 250px; font-size: medium;">
+                    <div class="dropdown-header text-warning" style="font-size: medium;">More Details</div>
+                    <b class="ms-3">Email:</b> <label class="dropdown-list"
+                        for="Email_detail">{{order.email}}</label><br>
+                    <b class="ms-3">Ph no.:</b> <label class="dropdown-list" for="Phno_detail">{{order.phno}}</label>
+                </div>
+            </div>
+        </td>
+        <td width="10%">
+            {%if order.Status%}
+            <span class="badge bg-success" style="font-size: 85%;">Delivered</span>
+            {%else%}
+            <span class="badge bg-info" style="font-size: 85%;">Not Delivered</span>
+            {%endif%}
+        </td>
+        <td class="align-items-center" width="1%">
+            <form action="/orders/" method="post">
+                <center>
+                    <Button type="submit" class="btn bg-danger text-white" name="remove" value="{{order.o_id}}">
+                        <i class="far fa-trash-alt"></i>
+                    </Button>
+                </center>
+            </form>
+        </td>
+    </tbody>
+    {%endfor%}
+    <tfoot>
+
+    </tfoot>
+</table>
+{% endblock body%}

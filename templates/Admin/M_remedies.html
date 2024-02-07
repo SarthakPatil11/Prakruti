@@ -1,0 +1,223 @@
+{%extends 'Admin/admin_base.html'%}
+{% load static %}
+
+<!-- 
+{% block title%}
+Medicines 
+{%endblock title%} 
+
+{% block admin_title2%} 
+/Medicine remedies 
+{%endblock admin_title2%} 
+-->
+
+{%block activeMR%}
+<!-- Divider -->
+<hr
+  style="width: 15px; border: 3px solid rgb(255, 183, 0); border-radius: 5px; opacity: 80%; margin-top: 0%; margin-bottom: 1%;">
+{% endblock activeMR%}
+
+{% block body %}
+<div class="d-flex justify-content-between">
+  <button type="button" class="btn btn-warning mx-3 mb-3" data-toggle="modal" data-target="#MModal"
+    onclick="transferMR()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="21" fill="currentColor" class="bi bi-plus-circle"
+      viewBox="0.5 2 15 16">
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+    </svg>
+    New
+  </button>
+
+  <!-- Modal -->
+  <div class="modal" id="MModal">
+    <div class="modal-dialog">
+      <div class="modal-content" style="border: none; background-color: rgb(221, 221, 221); z-index: 3">
+        <div class="modal-header bg-secondary">
+          <h4 class="modal-title text-warning" id="MTitle"></h4>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+            onclick="transferMR()"></button>
+        </div>
+
+        {% for message in messages %} {% if message.tags == "error" %}
+        <div class="alert alert-danger alert-dismissible fade show msg" role="alert">
+          <strong>{{ message.tags }}!</strong> {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %} {% endfor %}
+
+        <div class="modal-body">
+          <form action="/medicine_remedies/" method="post" enctype="multipart/form-data">
+            <div class="row mx-0 mb-2">
+              <div class="col-8">
+                <div class="row mb-2">
+                  <label for="name" class="form-label">
+                    <b>Medicine Name:</b>
+                  </label>
+                  <input type="first name" class="form-control" id="Name" placeholder="Medicine Name" name="name" />
+                </div>
+                <div class="row">
+                  <label for="file" class="form-label">
+                    <b>Choose Image:</b>
+                  </label>
+                  <input class="form-control" id="inFile" name="inFile" type="file" accept="image/*"
+                    onchange="validateImage()" required />
+                </div>
+              </div>
+              <div class="col-4">
+                <label for="Img" class="form-label">
+                  <b>Medicine Image:</b>
+                </label>
+                <br />
+                <center>
+                  <img src="../../static/img/close_cam.png" width="100%" id="Img" />
+                  <input type="hidden" name="ImgURL" id="setImgURL" value="">
+                  <input type="hidden" name="m_id" id="setmid" value="">
+                </center>
+              </div>
+            </div>
+
+            <div class="row mb-2">
+              <div class="col-12 col-md-12 col-lg-12">
+                <label for="Category" class="form-label">
+                  <b>Category:</b>
+                </label>
+                <input type="text" class="form-control" id="Cat" placeholder="Medicine Category" name="category"
+                  required />
+              </div>
+            </div>
+
+            <div class="row mb-2">
+              <div class="col-12 col-md-12 col-lg-12">
+                <label for="Description" class="form-label">
+                  <b>Descripion:</b>
+                </label>
+                <textarea class="form-control" id="Desc" placeholder="Medicine Description" name="description"
+                  required></textarea>
+              </div>
+            </div>
+
+            <div class="row mb-2">
+              <div class="col-12 col-md-12 col-lg-12">
+                <label for="Contents" class="form-label">
+                  <b>Medicine Contents:</b>
+                </label>
+                <textarea class="form-control" id="Content" placeholder="Medicine Contents" name="contents"
+                  required></textarea>
+              </div>
+            </div>
+
+            <div class="row mb-2">
+              <div class="col-12 col-md-6 col-lg-6">
+                <label for="Quantity" class="form-label">
+                  <b>Quantity:</b>
+                </label>
+                <input type="number" class="form-control" id="Quantity" placeholder="Quantity" name="quantity"
+                  onfocusout="validateQuantity()" required />
+              </div>
+              <div class="col-12 col-md-6 col-lg-6">
+                <label for="price" class="form-label"> <b>Price:</b> </label>
+                <div class="input-group">
+                  <span class="input-group-text">₹</span>
+                  <input type="number" class="form-control" id="Price" placeholder="Unit price" name="price"
+                    onfocusout="validatePrice()" />
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" name="submit" value="" id="Submit"
+              class="btn btn-warning text-gray-800 mt-2 float-right"></button>
+            {% csrf_token %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <form action="/medicine_remedies/" method="post" style="width: 55%;">
+    <div class="input-group">
+      <div class="input-group-append">
+        <select class="form-select form-control bg-light"
+          style="width:120px; border-end-end-radius: 0px; border-start-end-radius: 0px;" id="Srch" name="srch"
+          onchange="validateSrch()">
+          <option selected value="0">Search Via</option>
+          <option value="1">Name</option>
+          <option value="2">MedicineID</option>
+          <option value="3">Price</option>
+        </select>
+      </div> {% csrf_token %} <input type="text" name="search" class="form-control bg-light"
+        placeholder="Search for..." />
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit" id="srchBtn" disabled>
+          <i class="fas fa-search fa-sm"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Sort -->
+  <div class="dropdown float-right mx-3 mb-3">
+    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown"
+      aria-expanded="false">
+      Sort via
+    </button>
+    <form action="/medicine_remedies/" method="post">
+      <ul class="dropdown-menu" style="text-align: center;;">
+        <li><button class="btn" name="sort" type="submit" value="Name"> Name </button></li>
+        <li><button class="btn" name="sort" type="submit" value="id"> ID </button></li>
+        <li><button class="btn" name="sort" type="submit" value="Quantity"> Quantity </button></li>
+        <li><button class="btn" name="sort" type="submit" value="Price"> Price </button></li>
+        <!-- <button class="btn" name="sort" type="submit" value="Phone_No"> Phone No. </button>
+        <button class="btn" name="sort" type="submit" value="P_Prakruti"> Prakruti </button> -->
+      </ul> {% csrf_token %}
+    </form>
+  </div>
+</div>
+
+<table class="table table-hover table-bordered">
+  <thead class="table-primary">
+    <tr class="table_tr">
+      <th>ID</th>
+      <th>Picture</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Description</th>
+      <th>Contents</th>
+      <th>Quantity</th>
+      <th>Price(₹)</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  {% for MR in MRs%}
+  <tbody>
+    <td width="1%" id="getmid{{MR.id}}">{{MR.id}}</td>
+    <td width="1%">
+      <img src="../../media/{{MR.Img}}" id="img{{MR.id}}" style="width: auto; max-height: 150px; border-radius: 5px;"
+        alt="Italian Trulli">
+    </td>
+    <td id="name{{MR.id}}">{{MR.Name}}</td>
+    <td id="category{{MR.id}}">{{MR.Category}}</td>
+    <td id="desc{{MR.id}}">{{MR.Desc}}</td>
+    <td id="contents{{MR.id}}">{{MR.Content}}</td>
+    <td id="quantity{{MR.id}}" width="1%">{{MR.Quantity}}</td>
+    <td id="price{{MR.id}}" width="1%">{{MR.Price}}</td>
+    <td width="10%">
+      <form action="/medicine_remedies/" method="post">
+        <a class="btn bg-success text-white my-1" data-toggle="modal" data-target="#MModal"
+          onclick="transferMR({{MR.id}})">
+          <i class="far fa-edit"></i>
+        </a>
+        <button type="submit" class="btn bg-danger text-white" name="remove" value="{{MR.id}}">
+          <i class="far fa-trash-alt"></i>
+        </button>
+        {% csrf_token %}
+      </form>
+    </td>
+    <input type="hidden" id="getImgURL{{MR.id}}" value="{{MR.Img}}">
+  </tbody>
+  {%endfor%}
+  <tfoot></tfoot>
+</table>
+
+{% endblock body%}

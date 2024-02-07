@@ -1,0 +1,81 @@
+{%extends 'base.html'%} <!--  
+{% block background%}
+style="background:linear-gradient(45deg, #1de099, #1dc8cd)"
+{% endblock background%} 
+
+{% block title%} 
+Our Blogs
+{%endblock title%}
+
+{% block nav_links%}
+<li class="menu-active nav-item">
+    <a class="nav-link" href="/">Home</a>
+</li>
+<li class="menu-active nav-item">
+    <a class="nav-link" href="/analyze">Analyzer</a>
+</li>
+{% endblock nav_links%} 
+--> {% block body %} <!-- body below -->
+<div class="blgs" style="margin-top: 100px">
+  <div class="d-flex justify-content-between">
+    <form style="width: 55%">
+      <div class="input-group ms-3">
+        <input type="text" class="form-control bg-light" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button">
+            <i class="fas fa-search fa-sm"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+    <div class="dropdown float-right mx-3 mb-4">
+      <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-expanded="false"> Sort via </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li>
+          <a class="dropdown-item" href="#">Title</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#">Day</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#">Type</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- bolgs' cards -->
+  <div class="row m-1 mb-5"> 
+    {%for Bl in Bls%} 
+    <div class="col-12 col-md-6 col-lg-4 mt-2">
+      <div class="card">
+        <div class="card-header" style="background-color: #aaccff;">
+          <div class="row">
+            <div class="col-7">
+              <div class="title d-lg-inline text-white" style="font-size: larger; font-weight: 630;">
+                <b id="title{{Bl.pk}}">{{Bl.Title}}</b>
+                <span class="badge bg-warning mb-1 text-uppercase" id="Btype{{Bl.pk}}" style="font-size: 55%;">{{Bl.Type}}</span>
+              </div>
+            </div>
+            <div class="col-5">
+              <div class="text-white text-uppercase text-end h6" id="day">| {{Bl.Date}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body" style="min-height: 220px;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" id="content{{Bl.pk}}" onclick="passCont({{Bl.pk}})">
+          <!-- <CENTER>  -->
+            {%if Bl.Type == "BLOG"%}
+             <p class="card-text mb-0 pstyle" id="contents{{Bl.pk}}">{{Bl.Content}}</p> 
+            {%elif Bl.Type == 'IMAGE'%} <img src="../../media/{{Bl.file}}" id="img{{Bl.pk}}"
+              style="width: 100%; height: 100%; border-radius: 5px;" alt="Italian Trulli" /> 
+            {%else%} <video width="100%" id="vdo{{Bl.pk}}" controls="true" style="border-radius: 5px;"
+              src="../../media/{{Bl.file}}"></video> 
+            {%endif%} 
+            <input type="hidden" id="getImgURL{{Bl.pk}}" value="{{Bl.file}}">
+          <!-- </CENTER> -->
+        </div>
+      </div>
+    </div>
+    {%endfor%}
+  </div>
+</div> 
+{% endblock body %}

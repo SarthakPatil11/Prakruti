@@ -1,0 +1,673 @@
+{%extends 'base.html'%} {% load static %} {%block title%} Landing Page {%endblock title%} {% block nav_links%} <li class="menu-active nav-item">
+  <a class="nav-link" href="#intro">Home</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#about">About</a>
+</li>
+<li class="menu-active nav-item">
+  <a class="nav-link" href="#shopping">Shop</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#features">Features</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#book">Book</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#blogs">Blogs</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#gallery">Gallery</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#contact">Contact</a>
+</li> {% endblock nav_links%} {%block body %} <div class="offcanvas offcanvas-bottom mx-5" style="height:fit-content; border-top-left-radius: 10px; border-top-right-radius: 10px;"
+  id="offcanvasBottomP" aria-labelledby="offcanvasBottomLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title fw-bold text-warning" id="PName">Product Name</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body px-5 pb-4">
+    <div class="row">
+      <div class="col-12 col-md-12 col-lg-4 mb-2 mb-lg-0">
+        <center>
+          <img src="../static/admin/img/undraw_posting_photo.svg" style="width: 100%; border-radius: 5px;" alt="Italian Trulli" id="PImage">
+        </center>
+      </div>
+      <div class="col-12 col-md-12 col-lg-8">
+        <label for="Title"><b>Discription: </b></label>
+        <p class="mb-2" style="text-align: justify;" id="PDesc"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae aspernatur, modi voluptate molestiae amet ipsa laudantium nihil magni
+          minima, eaque, sapiente mollitia expedita unde fugiat sit deleniti officia magnam quos. </p>
+        <div class="row">
+          <div class="col-6">
+            <label for="Title"><b>Contents: </b></label>
+            <p class="mb-2" id="PContents"> sdasdasdasd, asdasdasd, asdasdasdasd, asdasd. </p>
+          </div>
+          <div class="col-6">
+            <b>Price(₹): </b><label id="Price">200</label><br />
+            <b>Quantity: </b><label id="Quantity">200</label>
+          </div>
+        </div>
+        <div> {% if user.is_authenticated %} <form action="/shopping/" method="post">
+            <button type="submit" name="submit" id="submit" value="" href="/shopping/" class="btn bg-gray-300 me-2 text-center" style="border-radius: 10px;">
+              <i class="fas fa-cart-plus" style="font-size: larger;"></i>
+            </button> {% csrf_token %} <a href="/cart/" class="btn bg-gray-300 text-uppercase fw-bold border-0" style="border-radius: 10px;"> Buy Now </a>
+          </form> {%else%} <a data-bs-toggle="modal" data-bs-target="#loginModal" class="btn bg-gray-300 text-uppercase fw-bold border-0" style="border-radius: 10px;"> LOGIN </a> login to buy
+          {%endif%} </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--==========================
+    Intro Section
+  ============================-->
+<section id="intro">
+  <div class="intro-text">
+    <h2>Welcome to Prakruti</h2>
+    <p>We help you to know your <i class="highlight">Ayurvedik Prakruti</i> & suggest <i class="highlight">Remedies</i>.</p> 
+    {% if user.is_authenticated %}
+      {%if user.P_Prakruti%}
+        <a href="recommend/" class="btn-get-started scrollto">Get Started</a> 
+      {%else%}
+        <a href="analyze/" class="btn-get-started scrollto">Get Started</a>
+      {%endif%}
+    {%else%}
+      <a class="btn-get-started scrollto" data-bs-toggle="modal" data-bs-target="#loginModal">Get Started</a>
+    {%endif%}
+  </div>
+  <div class="product-screens">
+    <div class="product-screen-1" data-aos="fade-up" data-aos-delay="400">
+      <img src="../static/img/product-screen-1.png" alt="" />
+    </div>
+    <div class="product-screen-2" data-aos="fade-up" data-aos-delay="200">
+      <img src="../static/img/product-screen-2.png" alt="" />
+    </div>
+    <div class="product-screen-3" data-aos="fade-up">
+      <img src="../static/img/product-screen-3.png" alt="" />
+    </div>
+  </div>
+</section>
+<!-- #intro -->
+<main id="main">
+  <!--==========================
+      About Us Section
+    ============================-->
+  <section id="about" class="section-bg">
+    <div class="container-fluid">
+      <div class="section-header">
+        <h3 class="section-title">About Us</h3>
+        <span class="section-divider"></span>
+        <p class="section-description"> Digital prakruti analysis and prediction for remedy<br /> Using advance Technology’s </p>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 about-img" data-aos="fade-right">
+          <img src="../static/img/about-img.jpg" alt="" />
+        </div>
+        <div class="col-lg-6 content" data-aos="fade-left">
+          <h2> Analysis the patient,predict prakruti and recommend home therapy & meditation. </h2>
+          <h3>we will reduce time of doctor and patient using Technology.</h3>
+          <p> We will analysis the patient through Q & A session and face recognition and predict prakruti. </p>
+          <ul>
+            <li>
+              <i class="ion-android-checkmark-circle"></i> face recognition.
+            </li>
+            <li>
+              <i class="ion-android-checkmark-circle"></i> Recommend home therapy / meditation & medicines
+            </li>
+            <li>
+              <i class="ion-android-checkmark-circle"></i> Easy Book appointment.
+            </li>
+          </ul>
+          <p> With the help of blogs, doctors can give some general suggestions and advice to everyone. </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- #about -->
+  <!--==========================
+      Shopping Section
+    ============================-->
+  <section id="shopping" class="section-bg" style="
+      background-image: url(../static/img/call-to-action-bg.jpg);
+      padding-top: 40px;
+      padding-bottom: 40px;
+    ">
+    <center>
+      <div class="section-header mt-2">
+        <h3 class="section-title cta-title" style="color: white"> Our Products </h3>
+        <span class="section-divider"></span>
+        <p class="section-description cta-text mb-0" style="color: white"> Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque </p>
+      </div>
+      <div class="mainContainer mx-md-4 mt-1">
+        <div class="row m-1 px-5 px-md-0 px-lg-0" data-aos="fade-up"> {%for prod in prds %} <div class="col-12 col-md-6 col-lg-3 mt-2">
+            <div class="card" style="border-radius: 15px; border-color: gray;" onclick="passPD({{prod.pk}})" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom">
+              <div style="height: 250px !important; display: flex; justify-content: center;">
+                <img src="../../media/Prakruti_App/Med_images/{{prod.Img}}" class="card-img-top" alt="..." style="width: auto; height: 100%; border-radius: 15px 15px 0px 0px" id="pimage{{prod.pk}}" />
+              </div>
+              <div class="card-body pb-0 pt-2 px-2 text-center bg-secondary" style="border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+                <h5 class="card-title fw-bold text-warning" id="name{{prod.pk}}">{{prod.Name}}</h5>
+                <input type="hidden" id="desc{{prod.pk}}" value="{{prod.Desc}}">
+                <input type="hidden" id="cont{{prod.pk}}" value="{{prod.Content}}">
+                <input type="hidden" id="price{{prod.pk}}" value="{{prod.Price}}">
+                <input type="hidden" id="quantity{{prod.pk}}" value="{{prod.Quantity}}">
+              </div>
+            </div>
+          </div> {%endfor%} </div>
+      </div>
+    </center>
+    <center>
+      <div class="intro-text pb-4 mt-5">
+        <a href="/shopping" class="btn-get-started scrollto bg-gray-500 border-none text-white" style="font-weight: 700;"> More Products <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+            fill="white" class="bi bi-arrow-right-circle" viewBox="0 0 16 16" style="margin-left: 10px">
+            <path fillRule="evenodd"
+              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
+          </svg>
+        </a>
+      </div>
+    </center>
+  </section>
+  <!-- #Shopping -->
+  <!--==========================
+      Product Featuress Section
+    ============================-->
+  <section id="features">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-4">
+          <div class="section-header" data-aos="fade" data-aos-duration="1000">
+            <h3 class="section-title">Product Features</h3>
+            <span class="section-divider"></span>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-5 features-img">
+          <img src="../static/img/product-features.png" alt="" data-aos="fade-right" data-aos-easing="ease-out-back" />
+        </div>
+        <div class="col-lg-8 col-md-7">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 box" data-aos="fade-left">
+              <div class="icon">
+                <i class="ion-ios-speedometer-outline"></i>
+              </div>
+              <h4 class="title"><a href="">Prakruti Predictor</a></h4>
+              <p class="description"> Prakruti prediction via Question and Answers also via Image Recognition. </p>
+            </div>
+            <div class="col-lg-6 col-md-6 box" data-aos="fade-left" data-aos-delay="100">
+              <div class="icon"><i class="ion-ios-flask-outline"></i></div>
+              <h4 class="title"><a href="">Home Remedies Recommendation</a></h4>
+              <p class="description"> After analysis of patient, we will recommend home therapy & meditation. </p>
+            </div>
+            <div class="col-lg-6 col-md-6 box" data-aos="fade-left" data-aos-delay="200">
+              <div class="icon"><i class="ion-social-buffer-outline"></i></div>
+              <h4 class="title">
+                <a href="">Medicine Remedies Recommendation</a>
+              </h4>
+              <p class="description"> for fast recovery ,medicine and tonics also available and we recommend that medicine using prakruti prediction data. </p>
+            </div>
+            <div class="col-lg-6 col-md-6 box" data-aos="fade-left" data-aos-delay="300">
+              <div class="icon"><i class="ion-ios-analytics-outline"></i></div>
+              <h4 class="title"><a href="">Book Apointment</a></h4>
+              <p class="description"> Patients can book an appointment through online video conferencing or you can visit physically. </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- #features -->
+  <!--==========================
+      Product Advanced Featuress Section
+    ============================-->
+  <section id="advanced-features">
+    <div class="features-row section-bg">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <img class="advanced-feature-img-right" src="../static/img/advanced-feature-1.jpg" alt="" data-aos="fade-left" />
+            <div data-aos="fade-right">
+              <h2> Analysis the Patient through Q & A Session and Face Recognition </h2>
+              <h3>analysis patient using advanced technology.</h3>
+              <p> we take question and answer sessoin and image for accurate health prediction. </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="features-row">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <img class="advanced-feature-img-left" src="../static/img/advanced-feature-2.jpg" alt="" />
+            <div data-aos="fade-left">
+              <h2>Recommend Home Therapy & Meditation.</h2>
+              <i class="ion-ios-paper-outline mt-2" data-aos="fade-left"></i>
+              <p data-aos="fade-left">Take analysis data and Prakruti Type.</p>
+              <i class="ion-ios-color-filter-outline mt-2" data-aos="fade-left" data-aos-delay="200"></i>
+              <p data-aos="fade-left" data-aos-delay="200"> find illness reason </p>
+              <i class="ion-ios-barcode-outline mt-2" data-aos="fade-left" data-aos-delay="400"></i>
+              <p data-aos="fade-left" data-aos-delay="400"> Suggest Best Remedies </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="features-row section-bg">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <img class="advanced-feature-img-right" src="../static/img/advanced-feature-3.jpg" alt="" data-aos="fade-left" />
+            <div data-aos="fade-right">
+              <h2>Recommend Home Therapy & Meditation.</h2>
+              <i class="ion-ios-paper-outline" data-aos="fade-left"></i>
+              <p data-aos="fade-left">Take analysis data and Prakruti Type.</p>
+              <i class="ion-ios-color-filter-outline" data-aos="fade-left" data-aos-delay="200"></i>
+              <p data-aos="fade-left" data-aos-delay="200"> find illness reason </p>
+              <i class="ion-ios-barcode-outline" data-aos="fade-left" data-aos-delay="400"></i>
+              <p data-aos="fade-left" data-aos-delay="400"> Suggest Best Remedies </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- #advanced-features -->
+  <!--==========================
+      Book Appointment Section
+    ============================-->
+  <!-- book apt modal --> {% if user.is_authenticated %} <div class="modal" id="ReschModal">
+    <div class="modal-dialog">
+      <div class="modal-content" style="
+                            border: none;
+                            background-color: rgb(221, 221, 221);
+                            z-index: 3;
+                          ">
+        <div class="modal-header" style="background-color: #e8bb37">
+          <h4 class="modal-title">Book Appointment</h4>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/login" method="post">
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-6 mb-2">
+                <label for="name" class="form-label"> <b>Day :</b> </label>
+                <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="Day" name="Day" onchange="dayChoose()">
+                  <option selected value="0">Select</option>
+                  <option value="1">Today</option>
+                  <option value="2">Tomorrow</option>
+                  <option value="3">Other</option>
+                </select>
+              </div>
+              <div class="col-12 col-md-6 col-lg-6 my-2" id="dateSec">
+                <label for="date" class="form-label"> <b>Date :</b> </label>
+                <input class="form-control" type="date" id="date" name="date" onchange="showAppnt()" />
+              </div>
+            </div>
+            <div class="row mb-2" id="Appnts">
+              <label for="name" class="form-label"><b>Available Appointments :</b> </label> <br />
+              <div class="form-check ms-5">
+                <input class="form-check-input" type="radio" name="appnt" id="appnt1" value="Morning" onchange="showAppnt()">
+                <label class="form-check-label me-5" for="appnt1"> Morning </label>
+                <input class="form-check-input" type="radio" name="appnt" id="appnt2" value="Afternoon" onchange="showAppnt()">
+                <label class="form-check-label me-5" for="appnt2"> Afternoon </label>
+                <input class="form-check-input" type="radio" name="appnt" id="appnt3" value="Evening" onchange="showAppnt()">
+                <label class="form-check-label me-5" for="appnt3"> Evening </label>
+              </div>
+            </div>
+            <button type="submit" id="schedule" class="btn btn-warning text-white-500 mt-2 float-right"> Book </button> {% csrf_token %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div> {% endif %} <section id="book">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9 text-center text-lg-left">
+          <h3 class="cta-title">Book Appointment</h3>
+          <p class="cta-text"> By booking an appointment the doctor can easily schedule that particular patient according to schedule. </p>
+        </div> {% if user.is_authenticated %} <div class="col-lg-3 col-12 cta-btn-container text-center">
+          <a class="cta-btn align-middle" href="#" data-toggle="modal" data-target="#ReschModal" onclick="dayReset()">Book Now </a>
+        </div> {% else %} <div class="col-lg-3 col-12 cta-btn-container text-center">
+          <a class="cta-btn align-middle" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Book Now </a>
+        </div> {% endif %}
+      </div>
+    </div>
+  </section>
+  <!-- #call-to-action -->
+  <!--==========================
+      Frequently Asked Questions Section
+    ============================-->
+  <section id="faq">
+    <div class="container">
+      <div class="section-header">
+        <h3 class="section-title">Frequently Asked Questions</h3>
+        <span class="section-divider"></span>
+        <p class="section-description">
+        </p>
+      </div>
+      <ul id="faq-list" data-aos="fade-up">
+        <li>
+          <a data-toggle="collapse" class="collapsed" href="#faq1">What is prakruti? <i class="ion-android-remove"></i></a>
+          <div id="faq1" class="collapse" data-parent="#faq-list">
+            <p> The term Prakriti is a Sanskrit word that means, Nature, creativity, or the first creation. 'Pra' means the 'beginning', 'commencement' or 'source of origin' and 'kriti' means 'to form'.
+              When put together, prakriti means 'natural form' or 'original form'. It is the constitution of a body which is determined at the time of conception of the foetus (baby in the womb) and it
+              cannot be changed thereafter. According to ayurveda, Tri-doshas (Vata, Pitta and Kapha) govern creation, maintenance and destruction of bodily tissues as well as the assimilation and
+              elimination. Each person is born with a unique combination of these doshas which decides their basic/genetic constitution called Prakriti. This genetic constitution can be of both
+              "physical body" as well as "mental body". </p>
+          </div>
+        </li>
+        <li>
+          <a data-toggle="collapse" href="#faq2" class="collapsed">Importance of Prakriti analysis? <i class="ion-android-remove"></i></a>
+          <div id="faq2" class="collapse" data-parent="#faq-list">
+            <p> Every body in this universe is composed of basic 5 elements called "pancha mahabhuta". These are: 1. Prithvi(earth) 2. Jala (water) 3. Agni (fire) 4. Vaayu (air) 5. Akash (space) All
+              these are in different ratio in each individual at minutest level. Actually at this minutest level control over the body is not easy. So to get full functional and easy control over the
+              body an upper level of "dosha" is there which is composed of combination of mahabhuta. Type of dosha 1. Kapha(sleshma)= earth + Water 2. Pitta = water + Fire 3. Vaata = air + Space Thus it
+              can be said that these 3 dosha comprises and control whole body. A perfect balance in the tridosha is said to be 'Sama Prakriti', the state of absolute good health. This is a case of
+              rarity. Sama Prakriti is known as the complete state of health. The balanced state of Vaata, Pitta and Kapha results in a state of equilibrium of functions of the body tissues. The
+              vitiation of any one dosha at the level of disease manifestation is counter balanced by another dosha. </p>
+          </div>
+        </li>
+        <li>
+          <a data-toggle="collapse" href="#faq3" class="collapsed">Formation of Prakriti:- <i class="ion-android-remove"></i></a>
+          <div id="faq3" class="collapse" data-parent="#faq-list">
+            <p> Every body in this universe is composed of basic 5 elements called "pancha mahabhuta". These are: 1. Prithvi(earth) 2. Jala (water) 3. Agni (fire) 4. Vaayu (air) 5. Akash (space) All
+              these are in different ratio in each individual at minutest level. Actually at this minutest level control over the body is not easy. So to get full functional and easy control over the
+              body an upper level of "dosha" is there which is composed of combination of mahabhuta. Type of dosha 1. Kapha(sleshma)= earth + Water 2. Pitta = water + Fire 3. Vaata = air + Space Thus it
+              can be said that these 3 dosha comprises and control whole body. A perfect balance in the tridosha is said to be 'Sama Prakriti', the state of absolute good health. This is a case of
+              rarity. Sama Prakriti is known as the complete state of health. The balanced state of Vaata, Pitta and Kapha results in a state of equilibrium of functions of the body tissues. The
+              vitiation of any one dosha at the level of disease manifestation is counter balanced by another dosha. </p>
+          </div>
+        </li>
+        <li>
+          <a data-toggle="collapse" href="#faq4" class="collapsed">Factors influencing formation of Prakriti:- <i class="ion-android-remove"></i></a>
+          <div id="faq4" class="collapse" data-parent="#faq-list">
+            <p> 1. Sperm and Ovum (parental traits) "Pitraja & "Matraja bhaava" Sperm and ovum are two important factors for new life to start. This small cell contains all codes to develop the full
+              grown human body. The code therein is decided by individuals who pass them on to next generation. All behaviour and other mental abilities mark an impression on these genes. Thus these
+              parental traits are passed upon the next progeny through sperms from men and ovum from women. Genetic factors transmitted from father for development of foetus includes factors related to
+              male sexual organs, formation of head and hair on body parts, nail, teeth, bones blood vessels, nerves and predominantly stable elements in the body. Genetic factors transmitted from
+              mother for development of fetus includes factors related female sexual organs, blood, muscles, adipose tissues, nervous tissues, skin, lymphatic, heart, liver, spleen, kidney,
+              gastrointestinal system and predominantly soft tissues and elements in the body. 2. Time of conception Time plays an important role in prakriti formation, as time keeps on changing it
+              becomes very difficult to pinpoint exactly perfect time to conceive, but nevertheless ayurveda gives some hints about what time is best suited for conceiving the baby. This generally comes
+              around 12th to 16th day from 1st day of start of menstrual flow. The time variation according to the seasons, age and clock time also have some effects on the prakriti of the foetus.
+              Details of which has been tabulated here. Cycle of age Childhood- (0 to 16 yrs) kapha predominant Adult-(17 to 69 yrs) pitta predominant Old age- (70 + yrs) vata predominant Cycle of time
+              Early morning / after sunset - kapha predominant Mid day/mid night- pitta predominant Evening / just before sunrise- vata predominant Cycle of seasons Autumn season- kapha predominant
+              Winter season- pitta predominant Rainy season - vata predominant 3. Condition of Uterus Uterus is a place where the new life start, therefore it become utmost necessary to ascertain the
+              condition of uterus. A healthy baby grows only in healthy uterus. Thus when baby develops in healthy uterus its body composition or genes tend to become healthier. In unhealthy uterus the
+              baby becomes more prone to diseases and this problem may persist lifetime. Therefore it can be concluded that condition of uterus also determines the body composition (Prakriti) of the
+              baby. 4. Food and daily routine habits during pregnancy (acquired qualities) "Saatmyaja and Rasaja bhaava" As per Ayurvedic principle each and every food item consists of predominance of
+              Vata, Pitta and Kapha characteristics. When a pregnant lady eats only a particular type of food her body 'dosha' condition changes which in turn affects the prakriti of the baby. Suppose
+              for an example if the pregnant lady eats lots of pickle during her pregnancy, it will result in increase of pitta dosha. This increase in the dosha condition is transferred to the foetus.
+              Thus now the baby will have some traits of pitta dosha also. This logic is also true with the daily regime or daily routine followed by the pregnant lady. 5. Mental state "Satavaj bhaava"
+              Genetic factors transmitted predominantly from parents for development of the mental attributes,of the fetus results in predominance of the qualities of satva, raja and tama guna which is
+              predominant. This results in happiness, sorrow, greed, anger and other emotions, memory and intelligence of the child. 6. Individual unique trait according to "karma” “Atmaja bhaava"
+              Factors transmitted from the "Purush" result in sensory perceptions, knowledge about self, functions associated with mind, life force, etc. at a subtle level Apart from above mentioned
+              factors responsible for the formation of the individual prakriti, one of the most important factor is self! According to the rebirth theory the deeds which remain unfinished in past life,
+              in this life body acquires all the pre-requisite to accomplish the goal. </p>
+          </div>
+        </li>
+        <li>
+          <a data-toggle="collapse" href="#faq5" class="collapsed">Consideration of unique features:- <i class="ion-android-remove"></i></a>
+          <div id="faq5" class="collapse" data-parent="#faq-list">
+            <p>Each and every race or community, etc has its own peculiar manifestation of unique features. All these should be taken in account while determining the "prakriti" of a person. Following
+              common features should be taken into considerations while ascertaining the body constitution - 1. 'Jaati prasakta'- the unique features of the parents' race. 2. 'Kula prasakta' - the
+              unique features of the community. 3. 'Desha anupaatini' - the unique features of his/her country or region of birth. 4. 'Kaalanupatini' - features according to time 5. Vaya anupathini' -
+              features according to age. Every particular group manifest its own traits which are reflected into each individuals of that group. So while analysing the Prakriti of an individual these
+              features should be kept in mind. </p>
+          </div>
+        </li>
+        <li>
+          <a data-toggle="collapse" href="#faq6" class="collapsed">Types of Prakriti:- <i class="ion-android-remove"></i></a>
+          <div id="faq6" class="collapse" data-parent="#faq-list">
+            <p> The prakriti of an individual is divided into basic categories, viz. A. Physical Prakriti B. Mental Prakriti Both physical and mental prakriti are of three types and there could be
+              infinite possibilities of combination of these prakriti. There is a class of people who opine as there are five types of Physical Prakriti viz. 1. Aakash Prakriti 2. Vayu Prakriti 3. Agni
+              Prakriti 4. Jala Prakriti 5. Parthiva Prakriti The above five types are according to the dominance of the Panch mahabhuta present in the body. It is very difficult to get control over
+              these minute elements (Panch Mahabhuta) without disturbing one another. If we try to alter any one mahabhuta, in turn other willalso get disturbed. Thus a level has to be created where we
+              are somewhat at ease to alter the condition arising in our body by disturbances in the balance of the Panch Mahabhutas. Our ancient teachers has formed a level at which it becomes easy to
+              handle the functions in our body, named the Tri dosha. Vata, Pitta and Kapha are three name of tri doshas. Doshas are basically three different set of categories based on the work they
+              perform. 1. Vata (Akash and Vayu) 2. Pitta (Agni and Jal) 3. Kapha (Jal and Prithvi) Thus henceforth everything in ayurveda will now shall be in terms of Vata, Pitta and Kapha. Therefore
+              the classification of the Prakriti is done as following- Types of Physical prakriti:- 1. Vata Prakriti 2. Pitta Prakriti 3. Kapha Prakriti Types of Mental Prakriti 1. Saatvik Prakriti 2.
+              Raajshik Prakriti 3. Taamshik Prakriti </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+  <!-- #faq -->
+  <!--==========================
+     Blogs Section
+    ============================-->
+  <section id="blogs" class="section-bg">
+    <div class="section-header pt-5">
+      <h3 class="section-title">Blogs</h3>
+      <span class="section-divider"></span>
+      <p class="section-description m-0"> Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque </p>
+    </div>
+    <div class="row m-1 mb-3">
+      <div class="col-12 col-md-6 col-lg-4 mt-3">
+        <div class="card">
+          <div class="card-header" style="background-color: #aaccff">
+            <div class="row">
+              <div class="col-9">
+                <div class="title d-lg-inline text-white" style="font-size: larger; font-weight: 630">
+                  <b id="title">what is overflowing text?</b><br />
+                  <span class="badge bg-secondary mb-1 text-uppercase" style="font-size: 55%">Image</span>
+                  <span class="badge bg-success mb-1 text-uppercase" style="font-size: 55%">Video</span>
+                  <span class="badge bg-warning mb-1 text-uppercase" style="font-size: 55%" id="Btype">Blog</span>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="text-white text-uppercase text-end h6">| Jan 2</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body overflow-auto text-justify" style="max-height: 280px" onclick="passCont()" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" id="content"> This might be
+            useful if you want to prevent a large gap from appearing if there is just enough space for the string.Or, where there is another element that you would not want the break to happen
+            immediately after. In the example below there is a checkbox and label. Let's say, you want the label to break should it be too long for the box. However, you don't want it to break
+            directly after the checkbox. With supporting text below as a natural lead-in to additional content. However, you don't want it to break directly after the checkbox. With supporting text
+            below as a natural lead-in to additional content. However, you don't want it to break directly after the checkbox. With supporting text below as a natural lead-in to additional content.
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-3">
+        <div class="card">
+          <div class="card-header" style="background-color: #aaccff">
+            <div class="row">
+              <div class="col-9">
+                <div class="title d-lg-inline text-white" style="font-size: larger; font-weight: 630"> What is overflowing text? <br />
+                  <span class="badge bg-secondary mb-1 text-uppercase" style="font-size: 55%">Image</span>
+                  <span class="badge bg-success mb-1 text-uppercase" style="font-size: 55%">Video</span>
+                  <span class="badge bg-warning mb-1 text-uppercase" style="font-size: 55%">Blog</span>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="text-white text-uppercase text-end h6">| Jan 2</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body col-12" style="min-height: 280px">
+            <center>
+              <video id="Vdo" style="border-radius: 5px;width:100%" controls src="../../static/file_example_MP4_480_1_5MG.mp4" name="Vdo">
+              </video>
+            </center>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-3">
+        <div class="card">
+          <div class="card-header" style="background-color: #aaccff">
+            <div class="row">
+              <div class="col-9">
+                <div class="title d-lg-inline text-white" style="font-size: larger; font-weight: 630"> What is overflowing text? <br />
+                  <span class="badge bg-secondary mb-1 text-uppercase" style="font-size: 55%">Image</span>
+                  <span class="badge bg-success mb-1 text-uppercase" style="font-size: 55%">Video</span>
+                  <span class="badge bg-warning mb-1 text-uppercase" style="font-size: 55%">Blog</span>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="text-white text-uppercase text-end h6">| Jan 2</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body" style="min-height: 280px">
+            <center>
+              <img src="../../static/admin/img/undraw_posting_photo.svg" style="width: 100%; border-radius: 5px" alt="Italian Trulli" />
+            </center>
+          </div>
+        </div>
+      </div>
+    </div>
+    <center>
+      <div class="intro-text pb-4">
+        <a href="/our_blogs" class="btn-get-started scrollto bg-gray-500 border-none text-white" style="font-weight: 700;"> More Blogs <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+            fill="white" class="bi bi-arrow-right-circle" viewBox="0 0 16 16" style="margin-left: 10px">
+            <path fillRule="evenodd"
+              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
+          </svg>
+        </a>
+      </div>
+    </center>
+  </section>
+  <!-- #blog -->
+  <!--==========================
+      Gallery Section
+    ============================-->
+  <section id="gallery">
+    <div class="container-fluid">
+      <div class="section-header">
+        <h3 class="section-title">Gallery</h3>
+        <span class="section-divider"></span>
+        <p class="section-description"> Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque </p>
+      </div>
+      <div class="row no-gutters">
+        <div class="col-lg-4 col-md-6">
+          <div class="gallery-item" data-aos="fade-up">
+            <a href="img/gallery/gallery-1.jpg" class="gallery-popup">
+              <img src="../static/img/gallery/gallery-1.jpg" alt="" />
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="gallery-item" data-aos="fade-up">
+            <a href="img/gallery/gallery-2.jpg" class="gallery-popup">
+              <img src="../static/img/gallery/gallery-2.jpg" alt="" />
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="gallery-item" data-aos="fade-up">
+            <a href="img/gallery/gallery-3.jpg" class="gallery-popup">
+              <img src="../static/img/gallery/gallery-3.jpg" alt="" />
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="gallery-item" data-aos="fade-up">
+            <a href="img/gallery/gallery-4.jpg" class="gallery-popup">
+              <img src="../static/img/gallery/gallery-4.jpg" alt="" />
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="gallery-item" data-aos="fade-up">
+            <a href="img/gallery/gallery-5.jpg" class="gallery-popup">
+              <img src="../static/img/gallery/gallery-5.jpg" alt="" />
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="gallery-item" data-aos="fade-up">
+            <a href="img/gallery/gallery-6.jpg" class="gallery-popup">
+              <img src="../static/img/gallery/gallery-6.jpg" alt="" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- #gallery -->
+  <!--==========================
+      Contact Section
+    ============================-->
+  <section id="contact">
+    <div class="container">
+      <div class="row" data-aos="fade-up">
+        <div class="col-lg-4 col-md-4">
+          <div class="contact-about">
+            <h3>PRAKRUTI</h3>
+            <p>Your Health Our Responsibility</p>
+            <div class="social-links">
+              <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+              <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+              <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+              <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
+              <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-4">
+          <div class="info">
+            <div>
+              <i class="ion-ios-location-outline"></i>
+              <p>A101 Rjarampuri 2nd lane<br />Kolhapur, 416012</p>
+            </div>
+            <div>
+              <i class="ion-ios-email-outline"></i>
+              <p>getyourprakruti@gmail.com</p>
+            </div>
+            <div>
+              <i class="ion-ios-telephone-outline"></i>
+              <p>+91 9189 55488 55</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5 col-md-8">
+          <div class="form">
+            <div id="sendmessage">Your message has been sent. Thank you!</div>
+            <div id="errormessage"></div>
+            <form action="" method="post" role="form" class="contactForm">
+              <div class="form-row">
+                <div class="form-group col-lg-6">
+                  <input type="text" id="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                  <div class="validation"></div>
+                </div>
+                <div class="form-group col-lg-6">
+                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+                  <div class="validation"></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+                <div class="validation"></div>
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" id="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+                <div class="validation"></div>
+              </div>
+              <div class="text-center">
+                <button type="submit" title="Send Message" onclick="send()"> Send Message </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- #contact -->
+</main>
+<script type="text/javascript">
+  function send() {
+    ebody = "From : " + document.getElementById('name').value + " Email : " + document.getElementById('email').value + " Message  : " + document.getElementById('message').value;
+    Email.send({
+      SecureToken: "8f05dc42-76d3-41bf-ba0a-07da1b89f398", //add your token here
+      To: 'getyourprakruti@gmail.com',
+      From: "getyourprakruti@gmail.com",
+      Subject: document.getElementById('subject').value,
+      Body: ebody,
+    })
+      .then((message) => {
+        alert("Email has been sent successfully!!!" + message);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    // alert(ebody)
+  }
+</script> {% endblock body%}
